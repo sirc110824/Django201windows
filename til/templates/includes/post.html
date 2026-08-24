@@ -1,0 +1,33 @@
+{% load thumbnail %}    
+    
+    <div class="max-w-xl mx-auto my-8 overflow-hidden bg-white border border-gray-200 rounded-xl shadow-sm    dark:bg-gray-900 dark:border-gray-800">
+        <div class="flex items-center justify-between p-4">
+            <div class="flex items-center space-x-3">
+                {% thumbnail post.author.profile.image "373x372" crop="center" as im %}
+                    <img class="mx-4 w-10 h-10 rounded-full object-cover hidden sm:block" src="{{ im.url }}" alt="User avatar">
+                {% endthumbnail %}
+            <div>
+            <a href="{% url 'profiles:detail' post.author.username %}">
+                <h3 class="text-sm font-semibold text-gray-950 dark:text-white">{{ post.author.username }}</h3>
+            </a>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Published • {{ post.date }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="px-4 pb-3 space-y-2">
+            <p class="text-sm leading-relaxed text-gray-800 dark:text-gray-200">
+                {{ post.text }}
+            </p>
+        </div>
+
+        <div class="flex items-center justify-between px-2 py-1">
+            {% if show_detail_link %}
+                <a href="{% url 'feed:detail' post.id %}">
+                    see more
+                </a>
+            {% else %}
+                <span> &nbsp;</span>
+            {% endif %}
+        </div>
+    </div>

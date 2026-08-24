@@ -1,0 +1,94 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> {% block title %} Default title in here {% endblock %} </title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style type="text/tailwindcss"></style>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="flex">
+      <!-- Sidebar -->
+        <aside class="h-screen w-64 bg-gray-800 text-white flex flex-col">
+          <a href="{% url 'feed:index' %}">
+            <div class="p-6 text-2xl font-bold border-b border-gray-700">
+              My App
+            </div>
+          </a>
+
+          <nav class="flex-1 px-4 py-4 space-y-2">    
+          {% if request.user.is_authenticated %}
+            <a href ="{% url 'account_logout' %}">
+              <span class="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400">
+                <i class='bx bx-log-out'></i>
+              </span>
+                logout 
+            </a>
+          {% else %}
+            <a href="{% url 'account_login' %}" class="block px-4 py-2 rounded hover:bg-blue-700">
+              <span class="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400">
+                 <i class='bx bx-door-open'></i>
+              </span>
+                Login
+            </a>
+          {% endif %}
+            
+            <a href="{% url 'feed:new_post' %}" class="block px-4 py-2 rounded hover:bg-blue-700 js-toggle-modal">
+              <span class="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400">
+                <i class="bx bx-layer-plus"></i>
+              </span>
+                New Post
+            </a>
+
+            <a href="/profile/{{ request.user.username}}" class="block px-4 py-2 rounded hover:bg-blue-700">
+              <span class="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400">
+                <i class="bx bx-cog"></i>
+              </span>
+                My Profile
+            </a>
+          </nav>
+        </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 p-10 bg-gray-100">
+      {% block body %}
+        {% block content %} {% endblock %}
+     {% endblock %} 
+    </main>
+
+        <!-- modal -->
+      {% if request.user.is_authenticated %}
+        <div class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800/60 hidden js-modal">
+          <div class="bg-white rounded-lg w-1/2">
+            <div class="flex flex-col items-start p-4">
+              <div class="flex items-center w-full">
+                <div class="text-gray-900 font-medium text-lg">New post</div>
+                  <svg class="ml-auto fill-current text-gray-700 w-6 h-6 cursor-pointer js-toggle-modal" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+                  <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"/>
+                  </svg>
+                </div>
+                <textarea class="border-2 border-blue-500 my-4 w-full js-post-text"  placeholder="Enter your post" maxlength="240" rows="3" data-post-url="{% url 'feed:new_post' %}"></textarea>
+              <div class="ml-auto">
+                <button class="bg-transparent hover:bg-gray-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded js-submit">
+                  Create new post
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+            
+    
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script src="{% static 'js/main.js' %}"></script>
+
+</body>
+</html>

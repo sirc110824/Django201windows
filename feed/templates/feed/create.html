@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %} Create new post {% endblock title %}
+
+
+{% block body %}
+     <form method="POST" action=".">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button class="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full transition">
+
+            <i class="bx bx-message-square-add text-xl"></i>
+
+            <span>Create Post</span>
+
+        </button>
+     </form>
+{% endblock body%}

@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="min-h-screen bg-gray-100 dark:bg-gray-950 py-10 px-4">
+
+    <div class="max-w-2xl mx-auto">
+
+        <!-- Page Header -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+                Edit Profile
+            </h1>
+
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                Update your profile picture and background image.
+            </p>
+        </div>
+
+
+        <!-- Card -->
+        <div class="overflow-hidden bg-white dark:bg-gray-900
+                    border border-gray-200 dark:border-gray-800
+                    rounded-2xl shadow-sm">
+
+            <form
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                {% csrf_token %}
+
+
+                <!-- Background Image Preview Area -->
+                <div class="relative">
+
+                    {% if user.profile.background_image %}
+
+                        <div
+                            class="h-56 bg-cover bg-center"
+                            style="background-image: url('{{ user.profile.background_image.url }}');"
+                        ></div>
+
+                    {% else %}
+
+                        <div
+                            class="h-56 bg-gradient-to-r from-gray-300 to-gray-400
+                                   dark:from-gray-700 dark:to-gray-800"
+                        ></div>
+
+                    {% endif %}
+
+
+                    <!-- Profile Image -->
+                    <div class="absolute -bottom-16 left-6">
+
+                        {% if user.profile.image %}
+
+                            <img
+                                src="{{ user.profile.image.url }}"
+                                alt="{{ user.username }}"
+                                class="w-32 h-32 rounded-full object-cover
+                                       border-4 border-white dark:border-gray-900
+                                       shadow-md"
+                            >
+
+                        {% else %}
+
+                            <div
+                                class="w-32 h-32 rounded-full
+                                       bg-gray-200 dark:bg-gray-700
+                                       border-4 border-white dark:border-gray-900
+                                       flex items-center justify-center"
+                            >
+                                <span
+                                    class="text-3xl font-bold text-gray-500 dark:text-gray-300"
+                                >
+                                    {{ user.username|first|upper }}
+                                </span>
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- User Information -->
+                <div class="px-6 pt-20 pb-6">
+
+                    <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
+                        {{ user.username }}
+                    </h2>
+
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                        Update your profile images below.
+                    </p>
+
+                </div>
+
+
+                <!-- Form Fields -->
+                <div class="px-6 pb-6 space-y-6">
+
+
+                    <!-- Profile Picture -->
+                    <div>
+
+                        <label
+                            for="id_image"
+                            class="block mb-2 text-sm font-medium
+                                   text-gray-700 dark:text-gray-300"
+                        >
+                            Profile Picture
+                        </label>
+
+                        <input
+                            type="file"
+                            name="image"
+                            id="id_image"
+                            accept="image/*"
+                            class="block w-full text-sm text-gray-500
+                                   file:mr-4
+                                   file:py-2
+                                   file:px-4
+                                   file:rounded-lg
+                                   file:border-0
+                                   file:text-sm
+                                   file:font-semibold
+                                   file:bg-gray-100
+                                   file:text-gray-700
+                                   hover:file:bg-gray-200
+                                   dark:file:bg-gray-800
+                                   dark:file:text-gray-200
+                                   dark:hover:file:bg-gray-700"
+                        >
+
+                        {% if form.image.errors %}
+                            <p class="mt-2 text-sm text-red-600">
+                                {{ form.image.errors }}
+                            </p>
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Background Image -->
+                    <div>
+
+                        <label
+                            for="id_background_image"
+                            class="block mb-2 text-sm font-medium
+                                   text-gray-700 dark:text-gray-300"
+                        >
+                            Background Image
+                        </label>
+
+                        <input
+                            type="file"
+                            name="background_image"
+                            id="id_background_image"
+                            accept="image/*"
+                            class="block w-full text-sm text-gray-500
+                                   file:mr-4
+                                   file:py-2
+                                   file:px-4
+                                   file:rounded-lg
+                                   file:border-0
+                                   file:text-sm
+                                   file:font-semibold
+                                   file:bg-gray-100
+                                   file:text-gray-700
+                                   hover:file:bg-gray-200
+                                   dark:file:bg-gray-800
+                                   dark:file:text-gray-200
+                                   dark:hover:file:bg-gray-700"
+                        >
+
+                        {% if form.background_image.errors %}
+                            <p class="mt-2 text-sm text-red-600">
+                                {{ form.background_image.errors }}
+                            </p>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- Buttons -->
+                <div
+                    class="flex justify-end gap-3
+                           px-6 py-4
+                           bg-gray-50 dark:bg-gray-950
+                           border-t border-gray-200 dark:border-gray-800"
+                >
+
+                    <!-- Cancel -->
+                    <a
+                        href="{% url 'profile:detail' user.username %}"
+                        class="px-5 py-2.5
+                               text-sm font-medium
+                               text-gray-700 dark:text-gray-300
+                               bg-white dark:bg-gray-800
+                               border border-gray-300 dark:border-gray-700
+                               rounded-lg
+                               hover:bg-gray-100 dark:hover:bg-gray-700
+                               transition"
+                    >
+                        Cancel
+                    </a>
+
+
+                    <!-- Save -->
+                    <button
+                        type="submit"
+                        class="px-5 py-2.5
+                               text-sm font-medium
+                               text-white
+                               bg-blue-600
+                               rounded-lg
+                               hover:bg-blue-700
+                               focus:ring-4
+                               focus:ring-blue-300
+                               dark:focus:ring-blue-800
+                               transition"
+                    >
+                        Save Changes
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

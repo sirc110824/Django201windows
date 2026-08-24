@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
+
+        <h1 class="text-3xl font-bold text-center mb-6">
+            Login
+        </h1>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-2">
+                    Email
+                </label>
+
+                {{ form.login }}
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-sm font-medium mb-2">
+                    Password
+                </label>
+
+                    {{ form.password }}
+            </div>
+
+            <button
+                type="submit"
+                class="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold py-3 rounded-xl transition">
+
+                Sign In
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
